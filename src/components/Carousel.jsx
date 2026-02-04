@@ -9,13 +9,15 @@ const Carousel = ({ imageUrls, title }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleLeftClick = () => {
-    setCurrentIndex(
+    setCurrentIndex(currentIndex =>
       currentIndex - 1 >= 0 ? currentIndex - 1 : imageUrls.length - 1
     );
   };
 
   const handleRightClick = () => {
-    setCurrentIndex(currentIndex + 1 < imageUrls.length ? currentIndex + 1 : 0);
+    setCurrentIndex(currentIndex =>
+      currentIndex + 1 < imageUrls.length ? currentIndex + 1 : 0
+    );
   };
 
   return (
