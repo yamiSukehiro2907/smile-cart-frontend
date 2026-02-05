@@ -1,5 +1,5 @@
 /* eslint-disable array-callback-return */
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import classNames from "classnames";
 import { Left, Right } from "neetoicons";
@@ -7,12 +7,18 @@ import { Button } from "neetoui";
 
 const Carousel = ({ imageUrls, title }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const timerRef = useRef(null);
 
   useEffect(() => {
-    const interval = setInterval(handleRightClick, 3000);
+    timerRef.current = setInterval(handleRightClick, 3000);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(timerRef.current);
   });
+
+  const resetTimer = () => {
+    clearInterval(timerRef.current);
+    timerRef.current = setInterval(handleRightClick, 3000);
+  };
 
   const handleLeftClick = () => {
     setCurrentIndex(currentIndex =>
@@ -27,19 +33,33 @@ const Carousel = ({ imageUrls, title }) => {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <Button
-        className="shrink-0 focus-within:ring-0 hover:bg-transparent"
-        icon={Left}
-        style="text"
-        onClick={handleLeftClick}
-      />
-      <img
-        alt={title}
-        className="max-w-56 h-56 max-h-56 w-56"
-        src={imageUrls[currentIndex]}
-      />
-      <div className="flex space-x-1">
+    <div className="flex flex-col items-center gap-4">
+      <div className="flex items-center gap-2">
+        <Button
+          className="shrink-0 focus-within:ring-0 hover:bg-transparent"
+          icon={Left}
+          style="text"
+          onClick={() => {
+            handleLeftClick();
+            resetTimer();
+          }}
+        />
+        <img
+          alt={title}
+          className="h-56 w-56 object-cover"
+          src={imageUrls[currentIndex]}
+        />
+        <Button
+          className="shrink-0 focus-within:ring-0 hover:bg-transparent"
+          icon={Right}
+          style="text"
+          onClick={() => {
+            handleRightClick();
+            resetTimer();
+          }}
+        />
+      </div>
+      <div className="flex gap-2">
         {imageUrls.map((_, index) => (
           <span
             key={index}
@@ -51,12 +71,6 @@ const Carousel = ({ imageUrls, title }) => {
           />
         ))}
       </div>
-      <Button
-        className="shrink-0 focus-within:ring-0 hover:bg-transparent"
-        icon={Right}
-        style="text"
-        onClick={handleRightClick}
-      />
     </div>
   );
 };
