@@ -17,6 +17,9 @@ const Product = () => {
   const [loading, setLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
+  console.log("🔴 PRODUCT COMPONENT RENDERED");
+  console.log("🔴 Slug from useParams:", slug);
+
   const fetchProduct = async () => {
     try {
       setLoading(true);
@@ -31,7 +34,7 @@ const Product = () => {
 
   useEffect(() => {
     fetchProduct();
-  }, []);
+  }, [slug]);
 
   if (loading) return <PageLoader />;
 
@@ -40,8 +43,6 @@ const Product = () => {
   const { name, description, mrp, offerPrice, imageUrls, imageUrl } = product;
   const totalDiscounts = mrp - offerPrice;
   const discountPercentage = ((totalDiscounts / mrp) * 100).toFixed(1);
-
-  console.log(product);
 
   return (
     <div className="m-2">
