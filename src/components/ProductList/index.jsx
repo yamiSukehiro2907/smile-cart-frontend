@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 import productsApi from "apis/products";
 import { PageNotFound } from "components/commons";
+import useDebounce from "hooks/useDebounce";
 import { Search } from "neetoicons";
 import { Input, NoData } from "neetoui";
 import { isEmpty } from "ramda";
@@ -15,9 +16,13 @@ const ProductList = () => {
   const [searchKey, setSearchKey] = useState("");
   const [isError, setIsError] = useState(false);
 
+  const debouncedSearchKey = useDebounce(searchKey);
+
   const fetchProducts = async () => {
     try {
-      const { products } = await productsApi.fetch({ searchTerm: searchKey });
+      const { products } = await productsApi.fetch({
+        searchTerm: debouncedSearchKey,
+      });
       setProducts(products);
     } catch {
       setIsError(true);
@@ -26,7 +31,7 @@ const ProductList = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [searchKey]);
+  }, [debouncedSearchKey]);
 
   if (isError) return <PageNotFound />;
 

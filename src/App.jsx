@@ -5,16 +5,12 @@ import Product from "./components/Product";
 import ProductList from "./components/ProductList";
 import routes from "./route";
 
-const App = () => {
-  console.log("🟢 APP COMPONENT RENDERED");
-
-  return (
-    <Switch>
-      <Route exact component={ProductList} path={routes.products.index} />
-      <Route exact component={Product} path={routes.products.show} />
-      <Redirect exact from={routes.root} to={routes.products.index} />
-      <Route component={PageNotFound} path="*" />
-    </Switch>
-  );
-};
+const App = () => (
+  <Switch>
+    <Route exact component={ProductList} path={routes.products.index} />
+    <Route exact component={Product} path={routes.products.show} />
+    <Redirect exact from={routes.root} to={routes.products.index} />
+    <Route component={PageNotFound} path="*" />
+  </Switch>
+);
 export default App;
