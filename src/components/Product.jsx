@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 
 import Typography from "antd/lib/typography/Typography";
-import axios from "axios";
+import productsApi from "apis/products";
 import { Spinner } from "neetoui";
 import { isNotNil, append } from "ramda";
 
 import Carousel from "./Carousel";
-import { BACKEND_BASE_URL } from "./constants";
 
 const Product = () => {
   const [product, setProduct] = useState(null);
@@ -15,9 +14,7 @@ const Product = () => {
   const fetchProduct = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `${BACKEND_BASE_URL}/products/infinix-inbook-2`
-      );
+      const response = productsApi.show();
       console.log("Api Response", response);
       setProduct(response.data);
     } catch (error) {
