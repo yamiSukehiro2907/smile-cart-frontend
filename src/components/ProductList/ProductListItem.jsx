@@ -1,17 +1,10 @@
-import AddToCart from "components/AddToCart";
+import AddToCart from "components/commons/AddToCart";
 import { Typography } from "neetoui";
 import { useHistory } from "react-router-dom";
 import routes from "src/route";
 import { buildUrl } from "utils/url";
 
-const ProductListItem = ({
-  imageUrl,
-  name,
-  offerPrice,
-  slug,
-  isInCart,
-  toggleIsInCart,
-}) => {
+const ProductListItem = ({ imageUrl, name, offerPrice, slug }) => {
   const history = useHistory();
 
   const handleClick = () => {
@@ -29,7 +22,7 @@ const ProductListItem = ({
         {name}
       </Typography>
       <Typography>${offerPrice}</Typography>
-      <AddToCart {...{ isInCart, toggleIsInCart }} />
+      <AddToCart {...{ slug }} />
     </div>
   );
 };

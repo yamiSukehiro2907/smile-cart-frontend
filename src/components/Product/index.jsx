@@ -17,9 +17,6 @@ const Product = () => {
   const [loading, setLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
-  console.log("🔴 PRODUCT COMPONENT RENDERED");
-  console.log("🔴 Slug from useParams:", slug);
-
   const fetchProduct = async () => {
     try {
       setLoading(true);
