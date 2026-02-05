@@ -5,7 +5,7 @@ import { PageNotFound } from "components/commons";
 import useDebounce from "hooks/useDebounce";
 import { Search } from "neetoicons";
 import { Input, NoData } from "neetoui";
-import { isEmpty } from "ramda";
+import { isEmpty, without } from "ramda";
 
 import ProductListItem from "./ProductListItem";
 
@@ -15,6 +15,7 @@ const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [searchKey, setSearchKey] = useState("");
   const [isError, setIsError] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
 
   const debouncedSearchKey = useDebounce(searchKey);
 
@@ -29,6 +30,14 @@ const ProductList = () => {
     }
   };
 
+  const toggleIsInCart = slug => {
+    setCartItems(prevCartItems =>
+      prevCartItems.includes(slug)
+        ? without([slug], cartItems)
+        : [slug, ...cartItems]
+    );
+  };
+
   useEffect(() => {
     fetchProducts();
   }, [debouncedSearchKey]);
@@ -38,6 +47,7 @@ const ProductList = () => {
   return (
     <div className="flex flex-col">
       <Header
+        cartItemsCount={cartItems.length}
         shouldShowBackButton={false}
         title="Smile Cart"
         actionBlock={
@@ -55,7 +65,12 @@ const ProductList = () => {
           <NoData className="h-full w-full" title="No products to show" />
         ) : (
           products.map(product => (
-            <ProductListItem key={product.slug} {...product} />
+            <ProductListItem
+              key={product.slug}
+              {...product}
+              isInCart={cartItems.includes(product.slug)}
+              toggleIsInCart={() => toggleIsInCart(product.slug)}
+            />
           ))
         )}
       </div>
