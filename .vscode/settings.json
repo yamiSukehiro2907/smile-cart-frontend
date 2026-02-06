@@ -3,6 +3,8 @@
   "files.trimFinalNewlines": true,
   "editor.formatOnSave": true,
   "cSpell.words": [
-    "dissoc"
+    "dissoc",
+    "neetoui",
+    "Toastr"
   ]
 }
