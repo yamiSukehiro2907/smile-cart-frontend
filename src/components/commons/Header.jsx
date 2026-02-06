@@ -1,5 +1,6 @@
 import { LeftArrow } from "neetoicons";
 import { Typography } from "neetoui";
+import { keys } from "ramda";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { useHistory } from "react-router-dom";
 import useCartItemsStore from "stores/useCartItemsStore";
@@ -7,6 +8,7 @@ import useCartItemsStore from "stores/useCartItemsStore";
 const Header = ({ title, shouldShowBackButton = true, actionBlock }) => {
   const history = useHistory();
   const { cartItems } = useCartItemsStore();
+  const cartItemsCount = keys(cartItems).length;
 
   return (
     <div className="m-2">
@@ -25,9 +27,9 @@ const Header = ({ title, shouldShowBackButton = true, actionBlock }) => {
         <div className="flex items-end space-x-4">
           {actionBlock}
           <div className="flex flex-col">
-            {cartItems.length > 0 && (
+            {cartItemsCount > 0 && (
               <span className="neeto-ui-border-black neeto-ui-rounded-full min-w-fit flex h-5 w-5 items-center self-end border p-1">
-                {cartItems.length}
+                {cartItemsCount}
               </span>
             )}
             <AiOutlineShoppingCart size="2rem" />

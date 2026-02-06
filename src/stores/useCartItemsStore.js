@@ -1,16 +1,17 @@
-import { without } from "ramda";
+import { assoc, dissoc } from "ramda";
 import { create } from "zustand";
 
 const useCartItemsStore = create(set => ({
-  cartItems: [],
-  toggleIsInCart: slug =>
+  cartItems: {},
+  setSelectedQuantity: (slug, quantity) => {
     set(({ cartItems }) => {
-      if (cartItems.includes(slug)) {
-        return { cartItems: without([slug], cartItems) };
+      if (quantity <= 0) {
+        return { cartItems: dissoc(slug, cartItems) };
       }
 
-      return { cartItems: [slug, ...cartItems] };
-    }),
+      return { cartItems: assoc(slug, quantity, cartItems) };
+    });
+  },
 }));
 
 export default useCartItemsStore;

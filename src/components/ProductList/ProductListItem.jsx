@@ -4,7 +4,13 @@ import { useHistory } from "react-router-dom";
 import routes from "src/route";
 import { buildUrl } from "utils/url";
 
-const ProductListItem = ({ imageUrl, name, offerPrice, slug }) => {
+const ProductListItem = ({
+  imageUrl,
+  name,
+  offerPrice,
+  slug,
+  availableQuantity,
+}) => {
   const history = useHistory();
 
   const handleClick = () => {
@@ -22,7 +28,7 @@ const ProductListItem = ({ imageUrl, name, offerPrice, slug }) => {
         {name}
       </Typography>
       <Typography>${offerPrice}</Typography>
-      <AddToCart {...{ slug }} />
+      <AddToCart {...{ slug, availableQuantity }} />
     </div>
   );
 };
