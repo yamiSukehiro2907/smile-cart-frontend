@@ -16,7 +16,7 @@ const Cart = () => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { cartItems, setSelectedQuantity } = useCartItemsStore();
+  const { cartItems, setSelectedQuantity } = useCartItemsStore.pick();
   const slugs = keys(cartItems);
 
   const fetchCartProducts = async () => {
@@ -49,6 +49,7 @@ const Cart = () => {
 
   useEffect(() => {
     fetchCartProducts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cartItems]);
 
   const totalMrp = cartTotalOf(products, MRP);
