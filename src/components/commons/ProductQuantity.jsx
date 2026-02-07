@@ -1,8 +1,13 @@
+import { useShowProduct } from "hooks/reactQuery/useProductsApi";
 import useSelectedQuantity from "hooks/useSelectedQuantity";
 import { Button } from "neetoui";
 
-const ProductQuantity = ({ slug, availableQuantity }) => {
+const ProductQuantity = ({ slug }) => {
   const { selectedQuantity, setSelectedQuantity } = useSelectedQuantity(slug);
+
+  const { data: product = {} } = useShowProduct(slug);
+
+  const { availableQuantity } = product;
 
   const preventNavigation = e => {
     e.stopPropagation();

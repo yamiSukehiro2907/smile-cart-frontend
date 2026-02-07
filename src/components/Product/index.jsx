@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
-
-import productsApi from "apis/products";
 import { PageLoader } from "components/commons";
 import AddToCart from "components/commons/AddToCart";
 import Header from "components/commons/Header";
+import { useShowProduct } from "hooks/reactQuery/useProductsApi";
 import useSelectedQuantity from "hooks/useSelectedQuantity";
 import { Button, Typography, Tag } from "neetoui";
-import { isNotNil, append } from "ramda";
+import { isNotNil } from "ramda";
 import { useParams } from "react-router-dom";
 import routes from "src/route";
 
@@ -16,29 +14,12 @@ import PageNotFound from "../commons/PageNotFound";
 
 const Product = () => {
   const { slug } = useParams();
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
 
   const { selectedQuantity, setSelectedQuantity } = useSelectedQuantity(slug);
 
-  const fetchProduct = async () => {
-    try {
-      setLoading(true);
-      const response = await productsApi.show(slug);
-      setProduct(response);
-    } catch {
-      setIsError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data: product = {}, isLoading, isError } = useShowProduct(slug);
 
-  useEffect(() => {
-    fetchProduct();
-  }, [slug]);
-
-  if (loading) return <PageLoader />;
+  if (isLoading) return <PageLoader />;
 
   if (isError) return <PageNotFound />;
 
@@ -63,10 +44,7 @@ const Product = () => {
           <div className="flex items-start justify-center">
             <div className="w-full max-w-lg">
               {isNotNil(imageUrls) ? (
-                <Carousel
-                  imageUrls={append(imageUrl, imageUrls)}
-                  title={name}
-                />
+                <Carousel />
               ) : (
                 <div className="neeto-ui-rounded-lg overflow-hidden bg-white shadow-sm">
                   <img
